@@ -32,7 +32,7 @@ class Config(object):
 
     input_shape = (3, 112, 112)
 
-    optimizer = 'adam'
+    optimizer = 'sgd'
 
     use_gpu = True  # use GPU or not
     gpu_id = '0, 1'
