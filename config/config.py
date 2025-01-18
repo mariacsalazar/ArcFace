@@ -12,17 +12,17 @@ class Config(object):
     finetune = False
 
     # /home/mathos/Documents/cs/bdrp/repos/arcface-pytorch
-    train_root = './data/imgs_subset_2000/train/'
-    train_list = './lfw_test_pair.txt'
-    val_list = './lfw_test_pair.txt'
+    train_root = '/kaggle/input/dataset2/imgs_subset_2000/train'
+    train_list = '/kaggle/working/ArcFace/lfw_test_pair.txt'
+    val_list = '/kaggle/working/ArcFace/lfw_test_pair.txt'
 
-    test_root = './data/imgs_subset_2000/test'
-    test_list = './lfw_test_pair.txt'
+    test_root = '/kaggle/input/dataset2/imgs_subset_2000/test'
+    test_list = '/kaggle/working/ArcFace/lfw_test_pair.txt'
 
-    lfw_root = './data/imgs_subset/'
-    lfw_test_list = './lfw_test_pair.txt'
+    lfw_root = '/kaggle/input/dataset2/imgs_subset_2000'
+    lfw_test_list = '/kaggle/working/ArcFace/lfw_test_pair.txt'
 
-    checkpoints_path = 'checkpoints'
+    checkpoints_path = '/kaggle/working/ArcFace/checkpoints/'
     # load_model_path = 'models/resnet18.pth'
     # test_model_path = 'checkpoints/resnet18_110.pth'
     save_interval = 1
