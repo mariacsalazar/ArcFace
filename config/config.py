@@ -49,5 +49,5 @@ class Config(object):
     weight_decay = 5e-3
     momentum=0.9
 
-    bias_model_lambda = 0.001
+    bias_model_lambda = 0.01
     num_bias_embedding = 256 # Size of the embedding used for bias prediction
