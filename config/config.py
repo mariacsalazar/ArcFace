@@ -46,8 +46,8 @@ class Config(object):
     lr = 5e-4  # initial learning rate
     lr_step = 5000
     lr_decay = 0.95  # when val_loss increase, lr = lr*lr_decay
-    weight_decay = 5e-4
-    momentum=0.4
+    weight_decay = 5e-3
+    momentum=0.9
 
     bias_model_lambda = 0
     num_bias_embedding = 512 # Size of the embedding used for bias prediction
