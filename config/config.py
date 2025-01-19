@@ -43,7 +43,7 @@ class Config(object):
     result_file = 'result.csv'
 
     max_epoch = 100
-    lr = 5e-3  # initial learning rate
+    lr = 5e-4  # initial learning rate
     lr_step = 5000
     lr_decay = 0.95  # when val_loss increase, lr = lr*lr_decay
     weight_decay = 5e-3
