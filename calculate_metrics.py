@@ -167,8 +167,8 @@ def get_distances_from_df(df, transform, model):
 
 	for i in tqdm(range(len(df))):
         
-		image_path_1 = f"./kaggle/input/datarfw/RFW/aligned_imgs/{'_'.join(df.iloc[i].img_1.split('_')[0:-1])}-{df.iloc[i].ethnicity.split(' ')[0]}/{df.iloc[i].img_1}"
-		image_path_2 = f"./kaggle/input/datarfw/RFW/aligned_imgs/{'_'.join(df.iloc[i].img_2.split('_')[0:-1])}-{df.iloc[i].ethnicity.split(' ')[-1]}/{df.iloc[i].img_2}"
+		image_path_1 = f"/kaggle/input/datarfw/RFW/aligned_imgs/{'_'.join(df.iloc[i].img_1.split('_')[0:-1])}-{df.iloc[i].ethnicity.split(' ')[0]}/{df.iloc[i].img_1}"
+		image_path_2 = f"/kaggle/input/datarfw/RFW/aligned_imgs/{'_'.join(df.iloc[i].img_2.split('_')[0:-1])}-{df.iloc[i].ethnicity.split(' ')[-1]}/{df.iloc[i].img_2}"
 		embedding_2 = F.normalize(get_embedding(image_path_2, transform, model))
 		embedding_1 = F.normalize(get_embedding(image_path_1, transform, model))
 		distances.append(l2_distance_torch(embedding_1, embedding_2))
