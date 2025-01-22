@@ -166,8 +166,9 @@ def get_distances_from_df(df, transform, model):
 	# embeddings_cache = {}
 
 	for i in tqdm(range(len(df))):
-		image_path_1 = f'./data/RFW/aligned_imgs/{'_'.join(df.iloc[i].img_1.split('_')[0:-1])}-{df.iloc[i].ethnicity.split(' ')[0]}/{df.iloc[i].img_1}'
-		image_path_2 = f'./data/RFW/aligned_imgs/{'_'.join(df.iloc[i].img_2.split('_')[0:-1])}-{df.iloc[i].ethnicity.split(' ')[-1]}/{df.iloc[i].img_2}'
+        
+		image_path_1 = f'./kaggle/input/datarfw/RFW/aligned_imgs/{'_'.join(df.iloc[i].img_1.split('_')[0:-1])}-{df.iloc[i].ethnicity.split(' ')[0]}/{df.iloc[i].img_1}'
+		image_path_2 = f'./kaggle/input/datarfw/RFW/aligned_imgs/{'_'.join(df.iloc[i].img_2.split('_')[0:-1])}-{df.iloc[i].ethnicity.split(' ')[-1]}/{df.iloc[i].img_2}'
 		embedding_2 = F.normalize(get_embedding(image_path_2, transform, model))
 		embedding_1 = F.normalize(get_embedding(image_path_1, transform, model))
 		distances.append(l2_distance_torch(embedding_1, embedding_2))
@@ -177,19 +178,19 @@ def main():
     np.random.seed(88)
     model_path = 'checkpoints/resnet18_99.pth'
     model = load_model_from_checkpoint(model_path)
-    validation_folder = 'data/imgs_subset_complete/validation'
+    # validation_folder = 'data/imgs_subset_complete/validation'
 
     transform = transforms.Compose([
         transforms.Resize((112, 112)),
         transforms.ToTensor(),
         transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
-    df = pd.read_csv('./data/RFW/rfw.csv')
+    df = pd.read_csv('./kaggle/input/datarfw/RFW/rfw.csv')
     distances = get_distances_from_df(df, transform, model)
     df['dist'] = distances
     # df['dist'] = df['dist'] / df['dist'].mean()
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    df[['img_1', 'img_2', 'dist']].to_csv(f'../FaVFA/model_results/results_arcface_{timestamp}.csv', index=False)
+    df[['img_1', 'img_2', 'dist']].to_csv(f'/kaggle/working/ArcFace/checkpoints/results_arcface_{timestamp}.csv', index=False)
 
 if __name__ == '__main__':
     main()
