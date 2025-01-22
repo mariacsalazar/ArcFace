@@ -185,7 +185,7 @@ def main():
         transforms.ToTensor(),
         transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
-    df = pd.read_csv('./kaggle/input/datarfw/RFW/rfw.csv')
+    df = pd.read_csv('/kaggle/input/datarfw/RFW/rfw.csv')
     distances = get_distances_from_df(df, transform, model)
     df['dist'] = distances
     # df['dist'] = df['dist'] / df['dist'].mean()
