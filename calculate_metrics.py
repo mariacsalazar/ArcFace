@@ -118,10 +118,10 @@ def get_rfw_paths(df):
         
         # Generate paths
         dir_part1 = '_'.join(img1.split('_')[:-1]) + '-' + ethnicity.split(' ')[0]
-        path1 = os.path.join('./data/RFW/aligned_imgs', dir_part1, img1)
+        path1 = os.path.join('/kaggle/input/datarfw/RFW/aligned_imgs', dir_part1, img1)
         
         dir_part2 = '_'.join(img2.split('_')[:-1]) + '-' + ethnicity.split(' ')[-1]
-        path2 = os.path.join('./data/RFW/aligned_imgs', dir_part2, img2)
+        path2 = os.path.join('/kaggle/input/datarfw/RFW/aligned_imgs', dir_part2, img2)
         
         unique_images.update([path1, path2])
         paths1.append(path1)
@@ -142,9 +142,9 @@ def get_lfw_paths(df):
         img2 = row['img_2']
         
         # Generate paths
-        path1 = os.path.join('./data/imgs_', img1)
+        path1 = os.path.join('/kaggle/input/datalfw/imgs', img1)
         
-        path2 = os.path.join('./data/imgs_', img2)
+        path2 = os.path.join('/kaggle/input/datalfw/imgs', img2)
         
         unique_images.update([path1, path2])
         paths1.append(path1)
@@ -216,7 +216,7 @@ def calculate_for_lfw(checkpoint_path):
     model = load_model_from_checkpoint(checkpoint_path)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
-    df = pd.read_csv('./lfw_test_pair.txt', sep = ' ')
+    df = pd.read_csv('/kaggle/working/ArcFace/lfw_test_pair.txt', sep = ' ')
     imagePahts = get_lfw_paths(df)
 
     transform = transforms.Compose([
