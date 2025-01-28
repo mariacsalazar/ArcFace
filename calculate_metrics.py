@@ -233,7 +233,7 @@ def calculate_for_lfw(checkpoint_path):
 
 def main():
     model_path = 'checkpoints/resnet18_25.pth'
-    calculate_for_lfw(model_path)
+    # calculate_for_lfw(model_path)
     distances, df = calculate_for_rfw(model_path)
     
     df['dist'] = distances
