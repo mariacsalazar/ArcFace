@@ -198,7 +198,7 @@ def calculate_for_rfw(checkpoint_path):
     model = load_model_from_checkpoint(checkpoint_path)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
-    df = pd.read_csv('./data/RFW/rfw.csv')
+    df = pd.read_csv('/kaggle/input/datarfw/RFW/rfw.csv')
     imagePaths = get_rfw_paths(df)
 
     transform = transforms.Compose([
