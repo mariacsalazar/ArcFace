@@ -232,7 +232,7 @@ def calculate_for_lfw(checkpoint_path):
 
 
 def main():
-    model_path = '/kaggle/working/ArcFace/checkpoints/resnet18_24.pth'
+    model_path = '/kaggle/working/ArcFace/checkpoints/resnet18_99.pth'
     calculate_for_lfw(model_path)
     distances, df = calculate_for_rfw(model_path)
     
