@@ -42,12 +42,12 @@ class Config(object):
     debug_file = '/tmp/debug'  # if os.path.exists(debug_file): enter ipdb
     result_file = 'result.csv'
 
-    max_epoch = 100
+    max_epoch = 25
     lr = 0.01  # initial learning rate
     lr_step = 5000
     lr_decay = 0.95  # when val_loss increase, lr = lr*lr_decay
     weight_decay = 5e-3
     momentum=0.9
 
-    bias_model_lambda = 0.001
-    num_bias_embedding = 486 # Size of the embedding used for bias prediction
+    bias_model_lambda = 0.02
+    num_bias_embedding = 409 # Size of the embedding used for bias prediction
