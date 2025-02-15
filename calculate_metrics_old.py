@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 from models import *
@@ -178,10 +179,7 @@ def get_distances_from_paths(imagePaths, transform, model):
             batch_embeddings = model(batch_images).cpu()
             
             for path, embedding in zip(batch_paths, batch_embeddings):
-                # Ensure embedding is at least 2D before normalizing
-                if embedding.dim() == 1:
-                    embedding = embedding.unsqueeze(0)
-                embedding_cache[path] = torch.nn.functional.normalize(embedding, dim=1).squeeze()
+                embedding_cache[path] = embedding
 
     # Vectorized distance calculation
     embeddings1 = [embedding_cache[path] for path in imagePaths.paths1]
@@ -210,7 +208,7 @@ def calculate_for_rfw(checkpoint_path):
     ])
     
     distances = get_distances_from_paths(imagePaths, transform, model)
-    print(f'\n The calculated accuracy is : {calculate_kfold_accuracy(distances, df.y_true)}')
+    print(f'\n The calculated accuracy for RFW is : {calculate_kfold_accuracy(distances, df.y_true)}')
     df['dist'] = distances
     return distances, df
 
@@ -228,14 +226,15 @@ def calculate_for_lfw(checkpoint_path):
     ])
     
     distances = get_distances_from_paths(imagePahts, transform, model)
-    print(f'\n The calculated accuracy is : {calculate_kfold_accuracy(distances, df.y_true)}')
+    print(f'\n The calculated accuracy for LFW is : {calculate_kfold_accuracy(distances, df.y_true)}')
     df['dist'] = distances
     return distances, df
 
 
 def main():
-    np.random.seed(88)
-    distances, df = calculate_for_lfw('/kaggle/working/ArcFace/checkpoints/resnet18_99.pth')
+    model_path = '/kaggle/working/ArcFace/checkpoints/resnet18_24.pth'
+    calculate_for_lfw(model_path)
+    distances, df = calculate_for_rfw(model_path)
     
     df['dist'] = distances
     
@@ -244,5 +243,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# python3 compute_metrics.py --dataset rfw --model_dist ./model_results/arcface.csv
