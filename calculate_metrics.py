@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 from models import *
@@ -118,10 +117,10 @@ def get_rfw_paths(df):
         
         # Generate paths
         dir_part1 = '_'.join(img1.split('_')[:-1]) + '-' + ethnicity.split(' ')[0]
-        path1 = os.path.join('/kaggle/input/datarfw/RFW/aligned_imgs', dir_part1, img1)
+        path1 = os.path.join('./data/RFW/aligned_imgs', dir_part1, img1)
         
         dir_part2 = '_'.join(img2.split('_')[:-1]) + '-' + ethnicity.split(' ')[-1]
-        path2 = os.path.join('/kaggle/input/datarfw/RFW/aligned_imgs', dir_part2, img2)
+        path2 = os.path.join('./data/RFW/aligned_imgs', dir_part2, img2)
         
         unique_images.update([path1, path2])
         paths1.append(path1)
@@ -142,9 +141,9 @@ def get_lfw_paths(df):
         img2 = row['img_2']
         
         # Generate paths
-        path1 = os.path.join('/kaggle/input/datalfw/imgs', img1)
+        path1 = os.path.join('./data/imgs_', img1)
         
-        path2 = os.path.join('/kaggle/input/datalfw/imgs', img2)
+        path2 = os.path.join('./data/imgs_', img2)
         
         unique_images.update([path1, path2])
         paths1.append(path1)
@@ -179,7 +178,10 @@ def get_distances_from_paths(imagePaths, transform, model):
             batch_embeddings = model(batch_images).cpu()
             
             for path, embedding in zip(batch_paths, batch_embeddings):
-                embedding_cache[path] = embedding
+                # Ensure embedding is at least 2D before normalizing
+                if embedding.dim() == 1:
+                    embedding = embedding.unsqueeze(0)
+                embedding_cache[path] = torch.nn.functional.normalize(embedding, dim=1).squeeze()
 
     # Vectorized distance calculation
     embeddings1 = [embedding_cache[path] for path in imagePaths.paths1]
@@ -198,7 +200,7 @@ def calculate_for_rfw(checkpoint_path):
     model = load_model_from_checkpoint(checkpoint_path)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
-    df = pd.read_csv('/kaggle/input/datarfw/RFW/rfw.csv')
+    df = pd.read_csv('./data/RFW/rfw.csv')
     imagePaths = get_rfw_paths(df)
 
     transform = transforms.Compose([
@@ -208,7 +210,7 @@ def calculate_for_rfw(checkpoint_path):
     ])
     
     distances = get_distances_from_paths(imagePaths, transform, model)
-    print(f'\n The calculated accuracy for RFW is : {calculate_kfold_accuracy(distances, df.y_true)}')
+    print(f'\n The calculated accuracy is : {calculate_kfold_accuracy(distances, df.y_true)}')
     df['dist'] = distances
     return distances, df
 
@@ -216,7 +218,7 @@ def calculate_for_lfw(checkpoint_path):
     model = load_model_from_checkpoint(checkpoint_path)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
-    df = pd.read_csv('/kaggle/working/ArcFace/lfw_test_pair.txt', sep = ' ')
+    df = pd.read_csv('./lfw_test_pair.txt', sep = ' ')
     imagePahts = get_lfw_paths(df)
 
     transform = transforms.Compose([
@@ -226,15 +228,14 @@ def calculate_for_lfw(checkpoint_path):
     ])
     
     distances = get_distances_from_paths(imagePahts, transform, model)
-    print(f'\n The calculated accuracy for LFW is : {calculate_kfold_accuracy(distances, df.y_true)}')
+    print(f'\n The calculated accuracy is : {calculate_kfold_accuracy(distances, df.y_true)}')
     df['dist'] = distances
     return distances, df
 
 
 def main():
-    model_path = '/kaggle/working/ArcFace/checkpoints/resnet18_24.pth'
-    calculate_for_lfw(model_path)
-    distances, df = calculate_for_rfw(model_path)
+    np.random.seed(88)
+    distances, df = calculate_for_lfw('checkpoints/resnet18_25.pth')
     
     df['dist'] = distances
     
@@ -243,3 +244,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# python3 compute_metrics.py --dataset rfw --model_dist ./model_results/arcface.csv
