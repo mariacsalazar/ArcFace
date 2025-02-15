@@ -235,7 +235,7 @@ def calculate_for_lfw(checkpoint_path):
 
 def main():
     np.random.seed(88)
-    distances, df = calculate_for_lfw('checkpoints/resnet18_25.pth')
+    distances, df = calculate_for_lfw('/kaggle/working/ArcFace/checkpoints/resnet18_99.pth')
     
     df['dist'] = distances
     
