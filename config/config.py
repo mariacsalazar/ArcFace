@@ -2,7 +2,7 @@ class Config(object):
     env = 'default'
     backbone = 'resnet18'
     classify = 'softmax'
-    num_classes = 2000
+    num_classes = 10572
     metric = 'bias'
     easy_margin = False
     use_se = False
