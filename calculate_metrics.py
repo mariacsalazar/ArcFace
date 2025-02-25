@@ -239,7 +239,7 @@ def calculate_for_lfw(checkpoint_path, num_bias_embedding):
 
 def main():
     num_bias_embedding = 0
-    model_path ='/kaggle/working/ArcFace/checkpoints/resnet18_99.pth'
+    model_path ='/kaggle/working/ArcFace/checkpoints/resnet18_34.pth'
     calculate_for_lfw(model_path, num_bias_embedding)
     distances, df = calculate_for_rfw(model_path, num_bias_embedding)
     
